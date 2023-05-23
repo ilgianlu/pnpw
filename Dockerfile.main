@@ -1,3 +1,4 @@
+# RUN TESTS
 FROM node:16-alpine as testing
 
 RUN curl -f https://get.pnpm.io/v6.16.js | node - add pnpm
@@ -12,6 +13,7 @@ RUN npx pnpm install
 
 RUN npx pnpm -r run test
 
+# BUILD FOR PRODUCTION
 FROM node:16-alpine as build
 
 RUN curl -f https://get.pnpm.io/v6.16.js | node - add pnpm
@@ -26,6 +28,7 @@ RUN npx pnpm install --frozen-lockfile --prod
 
 RUN cd packages/main && tar cvhf main.tar .
 
+# MINIFY FOR DEPLOY
 FROM node:16-alpine
 
 RUN curl -f https://get.pnpm.io/v6.16.js | node - add pnpm
